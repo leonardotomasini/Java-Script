@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            text-align: center;
+            margin: 50px auto;
+            background-color: lightblue;
+            color: black;
+            max-width: 1000px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: black;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.0em;
+            cursor: pointer;
+            background-color: lightslategray;
+            color: white;
+            margin-bottom: 40px;
+        }
+        #conselho-display {
+            background-color: white;
+            padding: 40px;
+            margin: 0 auto;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.0em;
+            color: black;
+            text-align: center;
+        }
+        #conselho-display.error {
+            color: red;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 1.0em;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Conselhos de um gringo!</h1>
+    <button id="gerarConselhoBtn">Gere um conselho.</button>
+    <div id="conselho-display">
+        Clique no botão para receber um conselho aleatório.
+        É importante saber inglês.
+    </div>
+    <footer>
+    </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('gerarConselhoBtn');
+            const display = document.getElementById('conselho-display');
+            btn?.addEventListener('click', async () => {
+            display.textContent = 'Buscando conselho...';
+            display.className = 'loading';
+            try {
+            const res = await fetch('https://api.adviceslip.com/advice');
+            const data = await res.json();
+            display.textContent = data.slip.advice;
+            display.className = '';
+            } catch (e) {
+            console.error('Erro:', e);
+            display.textContent = 'Ops! Não foi possível carregar o conselho. Tente novamente.';
+            display.className = 'error';
+            }
+            });
+            });
+        </script>
+</body>
+</html>
